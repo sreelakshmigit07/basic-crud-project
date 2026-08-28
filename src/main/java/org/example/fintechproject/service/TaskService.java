@@ -2,6 +2,7 @@ package org.example.fintechproject.service;
 
 import org.example.fintechproject.dto.TaskDTO;
 import org.example.fintechproject.entity.Task;
+import org.example.fintechproject.exception.TaskNotFoundException;
 import org.example.fintechproject.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class TaskService {
     public TaskDTO getTaskById(Long id){
 
             Task taskEntity = taskRepository.findById(id).orElseThrow(
-                    () -> new RuntimeException("Task not found with Id: "+id)
+                    () -> new TaskNotFoundException("Task not found with Id: "+id)
             );
         TaskDTO dto = new TaskDTO();
                 dto.setTaskType(taskEntity.getTaskType());
@@ -61,7 +62,7 @@ public class TaskService {
 
     public TaskDTO updateTask(Long id, TaskDTO dto) {
             Task taskEntity = taskRepository.findById(id).orElseThrow(
-                    () -> new RuntimeException("Task not found with id:"+ id));
+                    () -> new TaskNotFoundException("Task not found with id:"+ id));
 
             taskEntity.setTaskName(dto.getTaskName());
             taskEntity.setTaskType(dto.getTaskType());
